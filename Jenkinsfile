@@ -8,12 +8,6 @@ pipeline {
     }
 
     stages {
-        stage('Clone Repo') {
-            steps {
-                git 'https://github.com/SopheakkdeyChea/djangojenkins.git'
-            }
-        }
-
         stage('Setup Virtual Environment') {
             steps {
                 bat 'python -m venv venv'
@@ -40,7 +34,7 @@ pipeline {
             }
             steps {
                 echo 'Deploying to production...'
-                // Add deployment commands here
+                // Add your deployment commands here
             }
         }
     }
