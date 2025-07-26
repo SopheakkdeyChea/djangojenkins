@@ -9,7 +9,6 @@ pipeline {
         stage('Clone Repo') {
             steps {
                 git 'https://github.com/SopheakkdeyChea/djangojenkins.git'
-                git branch: 'main', url: 'https://github.com/SopheakkdeyChea/djangojenkins/tree/main/djangojenkins'
             }
         }
 
