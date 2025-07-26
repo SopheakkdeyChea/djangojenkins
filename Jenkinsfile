@@ -3,6 +3,8 @@ pipeline {
 
     environment {
         VENV_DIR = 'venv'
+        PYTHON = 'venv\\Scripts\\python.exe'
+        PIP = 'venv\\Scripts\\pip.exe'
     }
 
     stages {
@@ -14,21 +16,21 @@ pipeline {
 
         stage('Setup Virtual Environment') {
             steps {
-                sh 'python -m venv venv'
-                sh './venv/bin/pip install --upgrade pip'
-                sh './venv/bin/pip install -r requirements.txt'
+                bat 'python -m venv venv'
+                bat '%PIP% install --upgrade pip'
+                bat '%PIP% install -r requirements.txt'
             }
         }
 
         stage('Run Migrations') {
             steps {
-                sh './venv/bin/python manage.py migrate'
+                bat '%PYTHON% manage.py migrate'
             }
         }
 
         stage('Run Tests') {
             steps {
-                sh './venv/bin/python manage.py test'
+                bat '%PYTHON% manage.py test'
             }
         }
 
@@ -38,7 +40,7 @@ pipeline {
             }
             steps {
                 echo 'Deploying to production...'
-                // Add your deployment commands here
+                // Add deployment commands here
             }
         }
     }
