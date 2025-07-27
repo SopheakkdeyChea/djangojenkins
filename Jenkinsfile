@@ -2,39 +2,44 @@ pipeline {
     agent any
 
     environment {
-        VENV_DIR = 'venv'
-        PYTHON = 'venv\\Scripts\\python.exe'
-        PIP = 'venv\\Scripts\\pip.exe'
+        PYTHON_HOME = 'C:\\Users\\LENOVO\\AppData\\Local\\Programs\\Python\\Python311'
     }
 
     stages {
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+
         stage('Setup Virtual Environment') {
             steps {
-                bat 'python -m venv venv'
-                bat '%PIP% install --upgrade pip'
-                bat '%PIP% install -r requirements.txt'
+                bat '"%PYTHON_HOME%\\python.exe" -m venv venv'
+            }
+        }
+
+        stage('Activate Virtual Environment and Install Requirements') {
+            steps {
+                bat '.\\venv\\Scripts\\activate && pip install -r requirements.txt'
             }
         }
 
         stage('Run Migrations') {
             steps {
-                bat '%PYTHON% manage.py migrate'
+                bat '.\\venv\\Scripts\\activate && python manage.py migrate'
             }
         }
 
         stage('Run Tests') {
             steps {
-                bat '%PYTHON% manage.py test'
+                bat '.\\venv\\Scripts\\activate && python manage.py test'
             }
         }
 
         stage('Deploy') {
-            when {
-                branch 'main'
-            }
             steps {
-                echo 'Deploying to production...'
-                // Add your deployment commands here
+                echo 'Deploying your application...'
+                // Add deployment steps here
             }
         }
     }
